@@ -2,8 +2,6 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("com.google.gms.google-services")
-
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -11,11 +9,10 @@ android {
     namespace = "com.example.daily_coding_question_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
-    
+
     buildFeatures {
         buildConfig = true
     }
-
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -31,8 +28,8 @@ android {
         applicationId = "com.example.daily_coding_question_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 21
+        targetSdk = 34
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }

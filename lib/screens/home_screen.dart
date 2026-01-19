@@ -3,6 +3,9 @@ import '../models/coding_question.dart';
 import '../models/user_attempt.dart';
 import '../services/firestore_service.dart';
 import '../services/auth_service.dart';
+import '../config/app_config.dart';
+import '../services/mock_firestore_service.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final MockFirestoreService _mockService = MockFirestoreService();
   final FirestoreService _firestoreService = FirestoreService();
   final AuthService _authService = AuthService();
 
@@ -27,41 +31,43 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadQuestion();
   }
 
-  Future<void> _loadQuestion() async {
-    final question = await _firestoreService.getTodayQuestion();
-    final user = _authService.currentUser;
+Future<void> _loadQuestion() async {
+  if (AppConfig.demoMode) {
+    final question = _mockService.getTodayQuestion();
 
-    if (question != null && user != null) {
-      final attempted = await _firestoreService.hasAttempted(
-        user.uid,
-        question.id,
-      );
-
-      setState(() {
-        _question = question;
-        _hasAttempted = attempted;
-        _isLoading = false;
-      });
-    }
+    setState(() {
+      _question = question;
+      _hasAttempted =
+          _mockService.hasAttempted('demo_user', question.id);
+      _isLoading = false;
+    });
+    return;
   }
 
-  Future<void> _submitAnswer() async {
-    final user = _authService.currentUser;
-    if (user == null || _question == null) return;
+  // Production Firebase logic stays below (unchanged)
+}
 
-    final attempt = UserAttempt(
-      questionId: _question!.id,
-      userAnswer: _answerController.text,
-      submittedAt: DateTime.now(),
-    );
 
-    await _firestoreService.submitAttempt(user.uid, attempt);
-    await _firestoreService.updateUserProgress(user.uid);
+Future<void> _submitAnswer() async {
+  if (_question == null) return;
 
+  final attempt = UserAttempt(
+    questionId: _question!.id,
+    userAnswer: _answerController.text,
+    submittedAt: DateTime.now(),
+  );
+
+  if (AppConfig.demoMode) {
+    _mockService.submitAttempt('demo_user', attempt);
     setState(() {
       _hasAttempted = true;
     });
+    return;
   }
+
+  //  Production Firebase logic stays below
+}
+
 
   @override
   Widget build(BuildContext context) {
