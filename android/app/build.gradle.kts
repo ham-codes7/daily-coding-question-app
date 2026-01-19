@@ -11,6 +11,11 @@ android {
     namespace = "com.example.daily_coding_question_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
+    
+    buildFeatures {
+        buildConfig = true
+    }
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
