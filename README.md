@@ -1,16 +1,48 @@
-# daily_coding_question_app
+# Daily Coding Question App
 
-A new Flutter project.
+A Flutter + Firebase application that delivers one curated coding question per day to help students and beginners build consistent problem-solving habits.
 
-## Getting Started
+This project was built as part of the GDSC technical task.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## Core Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Anonymous user authentication using Firebase Auth
+- Exactly one global coding question per day for all users
+- Users must submit an attempt before viewing the official solution
+- Questions categorized by difficulty (Easy / Medium / Hard) and topic
+- User streak tracking based on daily consistency
+- Firestore-backed data persistence
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## Tech Stack
+
+- Flutter
+- Firebase Authentication
+- Firebase Firestore
+
+---
+
+## App Architecture
+
+The app is structured using a clean separation of concerns:
+
+### Models
+- `CodingQuestion` – represents a daily coding problem
+- `UserAttempt` – stores the user’s submitted answer
+- `UserProgress` – tracks streaks and last attempt date
+
+### Services
+- `AuthService` – handles anonymous authentication
+- `FirestoreService` – manages questions, attempts, and streak logic
+
+### Screens
+- `HomeScreen` – displays today’s question, accepts user input, and reveals the solution after submission
+
+---
+
+## Firestore Data Schema
+
+
